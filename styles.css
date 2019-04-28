@@ -1,0 +1,13 @@
+.group-card {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.container-card {
+  display: flex;
+  width: 50%;
+  border: 1px solid black;
+}
+.textbox-card {
+  flex-direction: column;
+}

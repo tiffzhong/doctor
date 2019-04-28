@@ -10,6 +10,7 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+
     <title>Doctor App</title>
   </head>
   <body>
@@ -17,26 +18,38 @@
       <h1 class="class text-center text-muted my-4">Find a Doc</h1>
 
       <form class="find-doctor my-4 text-center text-muted">
-        <select id="stateName-container" name="stateName">
+        <select
+          class="form-control my-3"
+          id="stateName-container"
+          name="stateValue"
+        >
           <option value="">Select a State</option>
         </select>
 
-        <select id="specialties-container" name="specialties">
+        <select
+          class="form-control my-3"
+          id="specialties-container"
+          name="specialtyValue"
+        >
           <option value="">Select a Specialty</option>
         </select>
 
-        <select id="gender-container" name="gender">
+        <select
+          class="form-control my-3"
+          id="gender-container"
+          name="genderValue"
+        >
           <option value="">Select Doctor Gender </option>
           <option value="male">Male</option>
           <option value="female">Female</option>
-          <option value="">No Preference</option>
         </select>
 
-        <input onchange="queryValues()" type="submit" id="search" />
+        <input id="search" type="submit" />
       </form>
-    </div>
 
-    <div class="search-output"></div>
+      <h2 class="class text-center my-4">Results:</h2>
+      <div class="group-card" id="search-output"></div>
+    </div>
 
     <script src="scripts/app.js"></script>
     <script src="scripts/doctor.js"></script>

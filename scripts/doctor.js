@@ -8,18 +8,22 @@ const stateName = document
 const search = document
   .getElementById("search")
   .addEventListener("click", searchQuery);
+const searchedResults = document.getElementById("search-output");
+
+searchForm.addEventListener("click", e => {
+  e.preventDefault();
+  // searchForm.reset();
+});
 
 function getSpecialties() {
-  const base = "https://api.betterdoctor.com/2016-03-01/conditions?";
+  const base =
+    "https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/conditions?";
   const apikey = "user_key=95947cfaec1b5458129c9ae00ba494e0";
   fetch(base + apikey)
     .then(res => res.json())
     .then(data => {
       let output = "";
       data.data.forEach(specialty => {
-        // let sorted = specialty.sort(function() {
-        //   return a - b;
-        // });
         output += `<option value=${specialty.name}>${specialty.name}</option>`;
       });
       document.getElementById("specialties-container").innerHTML = output;
@@ -46,29 +50,55 @@ function getState() {
     });
 }
 
-function searchQuery(selectedState, specialty, gender) {
-  const base = "https://api.betterdoctor.com/2016-03-01/doctors?";
-  // const practice = `query=${practice}`;
-  // const selectedState = `&location=${selectedState}`;
-  // const gender = `&gender=${gender}`;
-  // const limit = `&limit=10`;
+function searchQuery() {
+  // return new Promise((res, reject) => {
+  const stateValue = document.getElementById("stateName-container");
+  console.log(stateValue.value.toLowerCase());
+  const specialtyValue = document.getElementById("specialties-container");
+  console.log(specialtyValue.value.toLowerCase());
+  const genderValue = document.getElementById("gender-container");
+  console.log(genderValue.value);
+
+  const base =
+    "https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?";
+  const specialty = `query=${specialtyValue.value.toLowerCase()}`;
+  const stateName = `&location=${stateValue.value.toLowerCase()}`;
+  const gender = `&gender=${genderValue.value}`;
+  const limit = `&limit=10`;
+  const ratingSort = `&sort=rating-desc`;
   const apikey = "&user_key=95947cfaec1b5458129c9ae00ba494e0";
-  const result = fetch(base + specialty + stateName + gender + limit + apikey);
+
+  fetch(base + specialty + stateName + gender + limit + ratingSort + apikey)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(data => {
+      return updateOutput(data.data);
+    });
 }
 
-function queryValues(stateValue, specialtyValue, genderValue) {
-  const stateV = document.getElementById(stateValue);
-  const specialtyV = document.getElementById(specialtyValue);
-  const genderV = document.getElementById(genderValue);
-  console.log(stateV.value);
-  console.log(specialtyV.value);
-  console.log(genderV.value);
+function updateOutput(data) {
+  console.log(data);
+  let output = "";
+  data.map(doctor => {
+    console.log(doctor);
+    doctor.practices.map(practice => {
+      console.log(practice);
+    });
+    90;
+    output += `
+    <div class="container-card">
+    <img src=${doctor.profile.image_url} alt=${doctor.profile.first_name} ${
+      doctor.profile.last_name
+    } />
+    
+    <div class="textbox-card">
+   <h6 class="title-card"> Name: ${doctor.profile.first_name} ${
+      doctor.profile.last_name
+    }</h6>
+   <p class="text-card"> Gender: ${doctor.profile.gender}</p>
+    </div>
+    </div>`;
+  });
+  searchedResults.innerHTML = output;
 }
-
-searchForm.addEventListener("click", e => {
-  e.preventDefault();
-  // const selectedSpecialty = searchForm.value;
-  // const selectedState = "";
-  // const selectedGender = "";
-  searchForm.reset();
-});
