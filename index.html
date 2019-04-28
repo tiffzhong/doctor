@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Doctor App</title>
+  </head>
+  <body>
+    <div class="container my-5 mx-auto">
+      <h1 class="class text-center text-muted my-4">Find a Doc</h1>
+
+      <form class="find-doctor my-4 text-center text-muted">
+        <select id="stateName-container" name="stateName">
+          <option value="">Select a State</option>
+        </select>
+
+        <select id="specialties-container" name="specialties">
+          <option value="">Select a Specialty</option>
+        </select>
+
+        <select id="gender-container" name="gender">
+          <option value="">Select Doctor Gender </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="">No Preference</option>
+        </select>
+
+        <input onchange="queryValues()" type="submit" id="search" />
+      </form>
+    </div>
+
+    <div class="search-output"></div>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/doctor.js"></script>
+  </body>
+</html>
