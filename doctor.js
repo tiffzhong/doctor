@@ -10,15 +10,16 @@ const search = document
   .addEventListener("click", searchQuery);
 const searchedResults = document.getElementById("search-output");
 
+//preventing default settings in form
 searchForm.addEventListener("click", e => {
   e.preventDefault();
 });
 
+//getting the list of specialities to show in drop down menu
 function getSpecialties() {
-  const base =
-    "https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/conditions?";
-  const apikey = "user_key=aa098b4c24d266260d0a796f0e9b78f5";
-  fetch(base + apikey)
+  fetch(
+    "https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/conditions?user_key=aa098b4c24d266260d0a796f0e9b78f5"
+  )
     .then(res => res.json())
     .then(data => {
       let output = "";
@@ -32,6 +33,7 @@ function getSpecialties() {
     });
 }
 
+//getting state names and outputting abbreviated letters to use in API
 function getState() {
   fetch("stateNames.json")
     .then(res => res.json())
@@ -49,6 +51,7 @@ function getState() {
     });
 }
 
+//search query in betterdoctor's API to get data about doctors with specified categories: location, specialty, and gender
 function searchQuery() {
   const stateValue = document.getElementById("stateName-container");
   const specialtyValue = document.getElementById("specialties-container");
@@ -59,10 +62,10 @@ function searchQuery() {
   const specialty = `query=${specialtyValue.value.toLowerCase()}`;
   const stateName = `&location=${stateValue.value.toLowerCase()}`;
   const gender = `&gender=${genderValue.value}`;
-  const limit = `&limit=10`;
+  const limit = `&limit=25`;
   const ratingSort = `&sort=rating-desc`;
   const apikey = "&user_key=aa098b4c24d266260d0a796f0e9b78f5";
-
+  //sorting by overall rating first
   fetch(base + specialty + stateName + gender + limit + ratingSort + apikey)
     .then(function(response) {
       return response.json();
@@ -73,7 +76,6 @@ function searchQuery() {
 }
 
 function updateOutput(data) {
-  console.log(data);
   let output = "";
   {
     data.length
