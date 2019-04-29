@@ -5,9 +5,16 @@
 }
 .container-card {
   display: flex;
-  width: 50%;
+  width: 100%;
   border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px;
+}
+img {
+  width: 200px;
+  height: 210px;
 }
 .textbox-card {
   flex-direction: column;
+  margin: 10px 20px 0px 20px;
 }

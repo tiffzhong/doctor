@@ -12,13 +12,12 @@ const searchedResults = document.getElementById("search-output");
 
 searchForm.addEventListener("click", e => {
   e.preventDefault();
-  // searchForm.reset();
 });
 
 function getSpecialties() {
   const base =
     "https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/conditions?";
-  const apikey = "user_key=95947cfaec1b5458129c9ae00ba494e0";
+  const apikey = "user_key=aa098b4c24d266260d0a796f0e9b78f5";
   fetch(base + apikey)
     .then(res => res.json())
     .then(data => {
@@ -51,13 +50,9 @@ function getState() {
 }
 
 function searchQuery() {
-  // return new Promise((res, reject) => {
   const stateValue = document.getElementById("stateName-container");
-  console.log(stateValue.value.toLowerCase());
   const specialtyValue = document.getElementById("specialties-container");
-  console.log(specialtyValue.value.toLowerCase());
   const genderValue = document.getElementById("gender-container");
-  console.log(genderValue.value);
 
   const base =
     "https://cors-anywhere.herokuapp.com/https://api.betterdoctor.com/2016-03-01/doctors?";
@@ -66,7 +61,7 @@ function searchQuery() {
   const gender = `&gender=${genderValue.value}`;
   const limit = `&limit=10`;
   const ratingSort = `&sort=rating-desc`;
-  const apikey = "&user_key=95947cfaec1b5458129c9ae00ba494e0";
+  const apikey = "&user_key=aa098b4c24d266260d0a796f0e9b78f5";
 
   fetch(base + specialty + stateName + gender + limit + ratingSort + apikey)
     .then(function(response) {
@@ -80,25 +75,44 @@ function searchQuery() {
 function updateOutput(data) {
   console.log(data);
   let output = "";
-  data.map(doctor => {
-    console.log(doctor);
-    doctor.practices.map(practice => {
-      console.log(practice);
-    });
-    90;
-    output += `
-    <div class="container-card">
-    <img src=${doctor.profile.image_url} alt=${doctor.profile.first_name} ${
-      doctor.profile.last_name
-    } />
-    
-    <div class="textbox-card">
-   <h6 class="title-card"> Name: ${doctor.profile.first_name} ${
-      doctor.profile.last_name
-    }</h6>
-   <p class="text-card"> Gender: ${doctor.profile.gender}</p>
-    </div>
-    </div>`;
-  });
+  {
+    data.length
+      ? data.map(doctor => {
+          output += `
+      <div class="container-card">
+      <img src=${doctor.profile.image_url} alt=
+      ${doctor.profile.first_name} 
+      ${doctor.profile.last_name} />
+      <div class="textbox-card">
+     <h6 class="title-card"> Name: 
+     ${doctor.profile.first_name} 
+     ${doctor.profile.last_name}</h6>
+     <p class="text-card"> Gender: 
+     ${doctor.profile.gender}</p>
+     <p class="text-card"> Practice: 
+     ${doctor.specialties.length ? doctor.specialties[0].name : null}</p>    
+     <p class="text-card"> Location(s): <br>
+     ${
+       doctor.practices.length
+         ? doctor.practices.map(
+             practice =>
+               practice.visit_address.street +
+               " " +
+               (practice.visit_address.street2 || " ") +
+               " " +
+               practice.visit_address.city +
+               " " +
+               practice.visit_address.state_long +
+               " " +
+               practice.visit_address.zip +
+               "<br>"
+           )
+         : null
+     }</p>    
+      </div>
+      </div>`;
+        })
+      : (output += "No Results, please search again");
+  }
   searchedResults.innerHTML = output;
 }
